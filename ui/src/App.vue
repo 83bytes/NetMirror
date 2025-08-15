@@ -101,7 +101,19 @@ const handleLangChange = async (newLang) => {
 }
 
 const toggleTheme = () => {
-  appStore.setTheme(appStore.theme === 'dark' ? 'light' : 'dark')
+  const newTheme = appStore.theme === 'dark' ? 'light' : 'dark'
+  appStore.setTheme(newTheme)
+  
+  // Update html and body classes for overscroll background
+  if (newTheme === 'dark') {
+    document.documentElement.classList.add('dark')
+    document.body.classList.add('dark')
+    document.getElementById('app')?.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    document.body.classList.remove('dark')
+    document.getElementById('app')?.classList.remove('dark')
+  }
 }
 
 const changeTab = (tabId) => {
@@ -147,7 +159,7 @@ const updatePageInfo = () => {
   if (!appStore.config) return
   
   // 设置页面标题（如果后端没有注入的话）
-  const title = appStore.config.location || 'Network Diagnostic Tools'
+  const title = appStore.config.app_title || appStore.config.location || 'Network Diagnostic Tools'
   if (document.title === 'Looking glass server') {
     document.title = title
   }
@@ -164,6 +176,17 @@ onMounted(async () => {
   // Update page info when config is loaded
   updatePageInfo()
 
+  // Set initial theme classes for overscroll background
+  if (appStore.theme === 'dark') {
+    document.documentElement.classList.add('dark')
+    document.body.classList.add('dark')
+    document.getElementById('app')?.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    document.body.classList.remove('dark')
+    document.getElementById('app')?.classList.remove('dark')
+  }
+
   window.addEventListener('scroll', handleScroll)
 })
 
@@ -178,7 +201,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500">
+  <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500" style="min-height: 100vh; min-height: 100dvh;">
     <!-- Enhanced floating decorative elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-r from-primary-200/40 to-blue-300/30 dark:from-primary-800/20 dark:to-blue-900/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse-slow"></div>
@@ -247,7 +270,7 @@ onUnmounted(() => {
           <!-- Title and subtitle -->
           <div class="space-y-3 animate-fade-in">
             <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary-600 via-primary-500 to-blue-600 bg-clip-text text-transparent tracking-tight">
-              Network Diagnostic Tools
+              {{ appStore.config?.app_title || 'Network Diagnostic Tools' }}
             </h1>
             <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 font-medium max-w-2xl mx-auto">
               {{ appStore.config?.location || 'Professional Looking Glass Server' }}

@@ -17,6 +17,7 @@ func LoadFromEnv() {
 		"PUBLIC_IPV4":     &Config.PublicIPv4,
 		"PUBLIC_IPV6":     &Config.PublicIPv6,
 		"SPONSOR_MESSAGE": &Config.SponsorMessage,
+		"APP_TITLE":       &Config.AppTitle,
 	}
 
 	envVarsInt := map[string]*int{

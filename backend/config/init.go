@@ -23,6 +23,7 @@ type ALSConfig struct {
 	Location string `json:"location"`
 	Logo     string `json:"logo"`
 	LogoType string `json:"logo_type"`
+	AppTitle string `json:"app_title"`
 
 	PublicIPv4 string `json:"public_ipv4"`
 	PublicIPv6 string `json:"public_ipv6"`
@@ -57,6 +58,7 @@ func GetDefaultConfig() *ALSConfig {
 		Location:        "",
 		Logo:            "",
 		LogoType:        "auto",
+		AppTitle:        "Network Diagnostic Tools",
 		Iperf3StartPort: 30000,
 		Iperf3EndPort:   31000,
 
